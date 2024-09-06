@@ -13,9 +13,9 @@ public class CameraFollowPlayer : MonoBehaviour
 
     private Vector3 offset = new Vector3(0, 5, -7);
 
-    // Update is called once per frame
-    void Update()
+    // Update the camera's position after physics calculations
+    void FixedUpdate()
     {
-     transform.position = player.transform.position + offset;   
+        transform.position = player.transform.position + offset;   
     }
 }
