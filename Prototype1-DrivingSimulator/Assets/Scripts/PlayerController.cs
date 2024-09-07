@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+* Stefanos Charalampous
+* Assignment 2
+* This script is for player movement
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

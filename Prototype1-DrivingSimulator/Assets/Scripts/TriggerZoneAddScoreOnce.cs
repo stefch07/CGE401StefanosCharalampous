@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+* Stefanos Charalampous
+* Assignment 2
+* This script increments the score
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

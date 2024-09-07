@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+* Stefanos Charalampous
+* Assignment 2
+* ScoreManager script
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

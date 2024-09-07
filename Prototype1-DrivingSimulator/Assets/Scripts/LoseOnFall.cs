@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+* Stefanos Charalampous
+* Assignment 2
+* This script makes the player lose if falls off the road
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.UI;
@@ -6,8 +11,6 @@ using UnityEngine;
 public class LoseOnFall : MonoBehaviour
 {
     
-    //public Text textbox;
-    // Update is called once per frame
     void Update()
     {
         if(transform.position.y < -1)
