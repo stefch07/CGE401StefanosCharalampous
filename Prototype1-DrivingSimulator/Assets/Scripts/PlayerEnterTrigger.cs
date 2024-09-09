@@ -15,7 +15,6 @@ public class PlayerEnterTrigger : MonoBehaviour
     {
         if (other.CompareTag("TriggerZone"))
         {
-            // textbox.text = "You win!";
             ScoreManager.score++;
         }
     }
