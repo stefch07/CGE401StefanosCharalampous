@@ -1,6 +1,6 @@
 WebGL
 PlayerPath?
-/Users/stefanos04/WebGL/Prototype 1_WebGL
+/Users/stefanos04/CGE401/UnityProjects/CGE401StefanosCharalampous/WebGLBuilds/Prototype1_WebGL
 SceneListBegin?
 Assets/Scenes/Prototype 1.unity
 SceneListEnd?
