@@ -1,3 +1,8 @@
+/*
+* Stefanos Charalampous
+* Assignment 3
+* Spawns a random animal
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

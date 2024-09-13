@@ -1,3 +1,8 @@
+/*
+* Stefanos Charalampous
+* Assignment 3
+* Player controller script
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

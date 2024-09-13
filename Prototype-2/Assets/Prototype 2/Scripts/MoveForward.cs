@@ -1,14 +1,17 @@
+/*
+* Stefanos Charalampous
+* Assignment 3
+* Move forward script
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveForward : MonoBehaviour
 {
-    public float speed = 40;
-
-    // Update is called once per frame
+    public float speed;
     void Update()
     {
-        transform. Translate(Vector3.forward * Time.deltaTime * speed);
+        transform.Translate(Vector3.forward * Time.deltaTime * speed);
     }
 }

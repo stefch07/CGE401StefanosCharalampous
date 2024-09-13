@@ -1,3 +1,8 @@
+/*
+* Stefanos Charalampous
+* Assignment 3
+* Displays score
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

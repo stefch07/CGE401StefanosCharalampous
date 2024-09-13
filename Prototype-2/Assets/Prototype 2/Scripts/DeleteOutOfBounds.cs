@@ -1,3 +1,8 @@
+/*
+* Stefanos Charalampous
+* Assignment 3
+* Deletes out of bounds projectiles and animals
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
