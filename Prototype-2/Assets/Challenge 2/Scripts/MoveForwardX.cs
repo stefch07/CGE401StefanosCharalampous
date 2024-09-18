@@ -1,5 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/*
+* Stefanos Charalampous
+* Assignment 3
+* Moves objects forward
+*/
 using UnityEngine;
 
 public class MoveForwardX : MonoBehaviour

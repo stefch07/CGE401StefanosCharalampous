@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+* Stefanos Charalampous
+* Assignment 3
+* Spawns random balls
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
