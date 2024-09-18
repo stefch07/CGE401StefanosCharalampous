@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,34 +8,62 @@ public class GameManager : MonoBehaviour
     public Text healthText;
     private int score = 0;
     private int health = 5;
+    private bool gameOver = false;
 
     private void Start()
     {
-        scoreText.text = "Score: " + score;
-        healthText.text = "Health: " + health;
+        // Check if scoreText and healthText are assigned before using them
+        if (scoreText != null && healthText != null)
+        {
+            scoreText.text = "Score: " + score;
+            healthText.text = "Health: " + health;
+        }
+    }
+
+    private void Update()
+    {
+        // Check if the game is over and player presses "R" to restart
+        if (gameOver && Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reloads the current scene
+        }
     }
 
     public void IncrementScore()
     {
-        score++;
-        scoreText.text = "Score: " + score;
+        // Don't update score if the game is over
+        if (gameOver) return;
 
+        score++;
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
+        }
+
+        // Win condition
         if (score >= 5)
         {
-            Debug.Log("You Win!");
-            // Handle win condition
+            gameOver = true;
+            // Handle win condition (e.g., show win UI here)
         }
     }
 
     public void DecrementHealth()
     {
-        health--;
-        healthText.text = "Health: " + health;
+        // Don't update health if the game is over
+        if (gameOver) return;
 
+        health--;
+        if (healthText != null)
+        {
+            healthText.text = "Health: " + health;
+        }
+
+        // Loss condition
         if (health <= 0)
         {
-            Debug.Log("Game Over");
-            // Handle loss condition
+            gameOver = true;
+            // Handle game over (e.g., show game over UI here)
         }
     }
 }

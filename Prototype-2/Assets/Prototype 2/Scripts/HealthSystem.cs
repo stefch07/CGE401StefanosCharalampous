@@ -1,13 +1,13 @@
 /*
 * Stefanos Charalampous
 * Assignment 3
-* Health System script
+* Manages player health and UI display
 */
-//This script is based on https://www.youtube.com/watch?v=3uyolYVsiWc
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // Include this for scene management
 
 public class HealthSystem : MonoBehaviour
 {
@@ -24,16 +24,33 @@ public class HealthSystem : MonoBehaviour
 
     void Update()
     {
-        //If health is somehow more than max health, set health to max health
         if (health > maxHealth)
         {
             health = maxHealth;
         }
 
+        UpdateHearts();
 
+        if (health <= 0)
+        {
+            gameOver = true;
+            gameOverText.SetActive(true);
+            CheckForRestart(); // Call the method to check for restart input
+        }
+    }
+
+    public void TakeDamage()
+    {
+        if (gameOver) return;
+
+        health--;
+        UpdateHearts();
+    }
+
+    private void UpdateHearts()
+    {
         for (int i = 0; i < hearts.Count; i++)
         {
-            //Display full or empty heart sprite based on current health
             if (i < health)
             {
                 hearts[i].sprite = fullHeart;
@@ -43,40 +60,15 @@ public class HealthSystem : MonoBehaviour
                 hearts[i].sprite = emptyHeart;
             }
 
-            //Show the number of hearts equal to current max health
-            if (i < maxHealth)
-            {
-                hearts[i].enabled = true;
-            }
-            else
-            {
-                hearts[i].enabled = false;
-            }
+            hearts[i].enabled = i < maxHealth;
         }
+    }
 
-        if (health <= 0)
+    private void CheckForRestart() // Method to check if the player wants to restart
+    {
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            gameOver = true;
-            gameOverText.SetActive(true);
-
-            //Press R to restart if game is over
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-            }
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reloads the current scene
         }
-
     }
-
-    public void TakeDamage()
-    {
-        health--;
-    }
-
-    public void AddMaxHealth()
-    {
-        maxHealth++;
-    }
-
-
 }
