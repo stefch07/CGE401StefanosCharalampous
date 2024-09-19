@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class MoveLeft : MonoBehaviour
 {
-    public float speed = 30f;
-    private float leftBound = -15;
+	private float speed = 20;
+	private PlayerController playerControllerScript;
+	private float leftBound = -15;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+		playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
-    // FixedUpdate is called once per physics frame
-    void FixedUpdate()
+    // Update is called once per frame
+    void Update()
     {
-        // Use fixedDeltaTime for movement in FixedUpdate
-        transform.Translate(Vector3.left * Time.fixedDeltaTime * speed);
+		if (playerControllerScript.gameOver == false)
+		{
+			transform.Translate(Vector3.left * Time.deltaTime * speed);
+		}
 
-        // Destroy object if it moves past the left boundary
-        if (transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
-        {
-            Destroy(gameObject);
-        }
+		if (transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
+		{
+			Destroy(gameObject);
+		}
     }
 }
