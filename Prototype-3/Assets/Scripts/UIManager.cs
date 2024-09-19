@@ -1,3 +1,9 @@
+/*
+ * Stefanos Charalampous
+ * UIManager.cs
+ * Assignment 4
+ * This script manages the players score and its display
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

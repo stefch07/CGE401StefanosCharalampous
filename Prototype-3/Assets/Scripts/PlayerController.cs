@@ -1,3 +1,9 @@
+/*
+ * Stefanos Charalampous
+ * PlayerController.cs
+ * Assignment 4
+ * This script controls the players movement and other functions in the game
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

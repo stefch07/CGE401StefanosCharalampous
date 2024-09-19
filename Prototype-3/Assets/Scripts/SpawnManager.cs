@@ -1,3 +1,9 @@
+/*
+ * Stefanos Charalampous
+ * SpawnManager.cs
+ * Assignment 4
+ * This script spawns obstacles until the game is over
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

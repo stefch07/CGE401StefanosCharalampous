@@ -1,3 +1,9 @@
+/*
+ * Stefanos Charalampous
+ * TriggerZoneAddScore.cs
+ * Assignment 4
+ * This script increases the players score when they enter the trigger zone
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

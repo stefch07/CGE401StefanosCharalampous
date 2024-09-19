@@ -1,3 +1,9 @@
+/*
+ * Stefanos Charalampous
+ * RepeatBackground.cs
+ * Assignment 4
+ * This script repeats the background as it moves left
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

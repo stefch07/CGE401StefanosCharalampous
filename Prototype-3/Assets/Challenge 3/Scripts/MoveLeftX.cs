@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿/*
+ * Stefanos Charalampous
+ * MoveLeftX.cs
+ * Assignment 4
+ * This script moves objects to the left and destroys them when they go off-screen
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
