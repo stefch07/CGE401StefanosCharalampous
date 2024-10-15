@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+* Stefanos Charalampous
+* Assignment 5A
+* This script detects when the player enters a trigger zone, though it currently lacks specific functionality.
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -1,7 +1,7 @@
 ﻿/*
 * Stefanos Charalampous
-* Assignment 2
-* ScoreManager script
+* Assignment 5A
+* This script manages the game score, handles win conditions, and allows the game to be reset
 */
 using System.Collections;
 using UnityEngine;
@@ -27,7 +27,7 @@ public class ScoreManager : MonoBehaviour
             textbox.text = "Score: " + score;
         }
 
-        if (score >= 10)
+        if (score >= 15)
         {
             WinGame();
         }
