@@ -14,6 +14,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         weapon = gameObject.AddComponent<Weapon>();
         speed = 5f;
         health = 100;
+
+        weapon.damageBonus = 10;
     }
 
     protected abstract void Attack(int amount);
