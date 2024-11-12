@@ -1,39 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * Stefanos Charalampous
+ * SingletonGameManager.cs
+ * Assignment 6 - Hard Mode
+ * Manages asynchronous loading and unloading of levels as a singleton.
+ */
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public class SingletonGameManager : MonoBehaviour
 {
-    private static T instance; // Single declaration of instance field
+    public static SingletonGameManager instance;
 
-    public static T Instance // Property with correct spelling
-    {
-        get { return instance; }
-    }
-
-    public static bool IsInitialized
-    {
-        get {return instance != null;}
-    }
+    private string currentLevelName = string.Empty;
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
         {
-            Debug.LogError("[Singleton] Trying to instantiate a second instance of a singleton class.");
-            Destroy(this);
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            instance = (T)this;
+            Destroy(gameObject);
+            Debug.LogError("Attempted second instance of Singleton GameManager");
         }
     }
 
-    protected virtual void OnDestroy()
+    public void LoadLevel(string levelName)
     {
-        if (instance == this)
+        if (!string.IsNullOrEmpty(currentLevelName))
         {
-            instance = null;
+            UnloadLevel(currentLevelName);
         }
+
+        AsyncOperation ao = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
+        if (ao == null)
+        {
+            Debug.LogError("[GameManager] Unable to load level " + levelName);
+            return;
+        }
+        currentLevelName = levelName;
+    }
+
+    public void UnloadLevel(string levelName)
+    {
+        AsyncOperation ao = SceneManager.UnloadSceneAsync(levelName);
+        if (ao == null)
+        {
+            Debug.LogError("[GameManager] Unable to unload level " + levelName);
+            return;
+        }
+        currentLevelName = string.Empty;
     }
 }

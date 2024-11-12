@@ -1,5 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * Stefanos Charalampous
+ * Golem.cs
+ * Assignment 6 - Hard Mode
+ * Derived enemy class with specific attack and damage methods.
+ */
+
 using UnityEngine;
 
 public class Golem : Enemy
@@ -10,21 +15,16 @@ public class Golem : Enemy
     {
         base.Awake();
         health = 120;
-        GameManager.Instance.score += 2;
+        GameManager.instance.score += 2;  // Corrected reference to GameManager
     }
 
     protected override void Attack(int amount)
     {
         Debug.Log("Golem Attacks!");
     }
+
     public override void TakeDamage(int amount)
     {
         Debug.Log("You took " + amount + " points of damage!");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
