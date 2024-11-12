@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // Lock the cursor when the game starts
+            Cursor.lockState = CursorLockMode.Locked;
         }
         else
         {
@@ -85,12 +88,14 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         pauseMenu.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;  // Unlock the cursor when the game is paused
     }
 
     public void Unpause()
     {
         Time.timeScale = 1f;
         pauseMenu.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;  // Lock cursor again when unpausing
     }
 
     private void Update()
