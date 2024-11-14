@@ -6,6 +6,9 @@ TagManager:
   tags:
   - FocalPoint
   - Enemy
+  - SpawnManager
+  - PowerUp
+  - Powerup
   layers:
   - Default
   - TransparentFX
