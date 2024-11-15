@@ -1,24 +1,43 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject enemyPrefab; // Enemy prefab to spawn
-    public GameObject powerupPrefab; // Power-up prefab to spawn
+    public GameObject enemyPrefab;
+    public GameObject powerupPrefab;
+    public TMP_Text waveText; // Text for displaying current wave
+    public TMP_Text winText; // Text for displaying win message
     private float spawnRange = 9f;
     public int enemyCount;
     public int waveNumber = 1;
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Spawn the initial wave of enemies and a power-up
         SpawnEnemyWave(waveNumber);
         SpawnPowerup(1);
+        waveText.text = "Wave: " + waveNumber; // Initialize wave number display
+        winText.gameObject.SetActive(false); // Ensure win text is hidden at the start
     }
 
-    // Method to spawn a wave of enemies
+    void Update()
+    {
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+
+        if (waveNumber > 10) // Win condition
+        {
+            DisplayWinMessage();
+        }
+        else if (enemyCount == 0)
+        {
+            waveNumber++;
+            SpawnEnemyWave(waveNumber);
+            SpawnPowerup(1);
+            waveText.text = "Wave: " + waveNumber; // Update wave number display
+        }
+    }
+
     private void SpawnEnemyWave(int enemiesToSpawn)
     {
         for (int i = 0; i < enemiesToSpawn; i++)
@@ -27,7 +46,6 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    // Method to spawn power-ups
     private void SpawnPowerup(int powerupsToSpawn)
     {
         for (int i = 0; i < powerupsToSpawn; i++)
@@ -36,27 +54,23 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    // Method to generate a random position on the platform
     private Vector3 GenerateSpawnPosition()
     {
         float spawnPosX = Random.Range(-spawnRange, spawnRange);
         float spawnPosZ = Random.Range(-spawnRange, spawnRange);
-        Vector3 randomPos = new Vector3(spawnPosX, 0, spawnPosZ);
-        return randomPos;
+        return new Vector3(spawnPosX, 0, spawnPosZ);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void DisplayWinMessage()
     {
-        // Count the number of enemies currently in the scene
-        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        winText.gameObject.SetActive(true); // Show the win text
+        Time.timeScale = 0; // Pause the game
+        Debug.Log("You Win! Press R to Restart!");
 
-        // If no enemies are left, spawn a new wave and a power-up
-        if (enemyCount == 0)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            waveNumber++; // Increment the wave number
-            SpawnEnemyWave(waveNumber); // Spawn a new wave with enemies equal to the wave number
-            SpawnPowerup(1); // Spawn one power-up
+            Time.timeScale = 1; // Resume the game before restarting
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Restart the scene
         }
     }
 }

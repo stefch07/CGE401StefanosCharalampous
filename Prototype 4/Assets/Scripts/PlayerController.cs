@@ -1,6 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using TMPro; // For TextMeshPro
+using UnityEngine.SceneManagement; // For restarting the scene
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,22 +12,31 @@ public class PlayerController : MonoBehaviour
     public bool hasPowerup;
     private float powerupStrength = 15.0f; // Strength of the power-up effect
     public GameObject powerupIndicator; // Indicator for the power-up
+    public TMP_Text lossText; // Reference to "You Lose!" text
+    public TMP_Text winText; // Reference to "You Win!" text
 
-    // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
         focalPoint = GameObject.FindGameObjectWithTag("FocalPoint");
+
         powerupIndicator.SetActive(false); // Ensure the indicator is inactive at the start
+        lossText.gameObject.SetActive(false); // Ensure loss text is hidden at the start
+        winText.gameObject.SetActive(false); // Ensure win text is hidden at the start
     }
 
-    // Update is called once per frame
     void Update()
     {
         forwardInput = Input.GetAxis("Vertical");
 
         // Position the power-up indicator below the player
         powerupIndicator.transform.position = transform.position + new Vector3(0, -0.5f, 0);
+
+        // Check if the player falls off the platform
+        if (transform.position.y < -10)
+        {
+            DisplayLossMessage();
+        }
     }
 
     private void FixedUpdate()
@@ -66,6 +76,19 @@ public class PlayerController : MonoBehaviour
 
             // Apply an impulse force to the enemy away from the player
             enemyRigidbody.AddForce(awayFromPlayer * powerupStrength, ForceMode.Impulse);
+        }
+    }
+
+    private void DisplayLossMessage()
+    {
+        lossText.gameObject.SetActive(true); // Show the loss text
+        Time.timeScale = 0; // Pause the game
+        Debug.Log("You Lose! Press R to Restart!");
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Time.timeScale = 1; // Resume the game before restarting
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Restart the scene
         }
     }
 }
