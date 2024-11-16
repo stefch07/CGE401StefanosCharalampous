@@ -1,46 +1,70 @@
-﻿using UnityEngine;
+﻿/*
+ * Stefanos Charalampous
+ * SpawnManagerX.cs
+ * Assignment 7
+ * Manages spawning, win/loss conditions, and restarting the game.
+ */
+
+using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class SpawnManagerX : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public GameObject powerupPrefab;
 
-    private float spawnRangeX = 10;
-    private float spawnZMin = 15;
-    private float spawnZMax = 25;
+    public TMP_Text waveText; // Text displaying the current wave
+    public TMP_Text lossText; // Text displayed on loss
+    public TMP_Text winText; // Text displayed on win
 
-    public int enemyCount;
     public int waveCount = 1;
-    public float enemySpeed = 5.0f;
+    public float enemySpeed = 50f; // Base speed of enemies
 
-    public GameObject player;
+    private float spawnRangeX = 10f;
+    private float spawnZMin = 15f; // Minimum spawn Z
+    private float spawnZMax = 25f; // Maximum spawn Z
+
+    public GameObject player; // Reference to the player
+
+    private bool isGameOver = false; // Tracks if the game is over
+
+    void Start()
+    {
+        waveText.text = "Wave: " + waveCount;
+        lossText.gameObject.SetActive(false);
+        winText.gameObject.SetActive(false);
+
+        SpawnEnemyWave(waveCount);
+    }
 
     void Update()
     {
-        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        if (isGameOver && Input.GetKeyDown(KeyCode.R))
+        {
+            RestartGame();
+        }
 
-        if (enemyCount == 0)
+        int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+
+        if (enemyCount == 0 && waveCount <= 10)
         {
             waveCount++;
-            enemySpeed += 0.5f; // Increase enemy speed with each wave
+            enemySpeed += 10f; // Increase enemy speed with each wave
             SpawnEnemyWave(waveCount);
+            waveText.text = "Wave: " + waveCount; // Update wave display
+        }
+        else if (waveCount > 10)
+        {
+            TriggerWinCondition();
         }
     }
 
-    Vector3 GenerateSpawnPosition()
+    private void SpawnEnemyWave(int enemiesToSpawn)
     {
-        float xPos = Random.Range(-spawnRangeX, spawnRangeX);
-        float zPos = Random.Range(spawnZMin, spawnZMax);
-        return new Vector3(xPos, 0, zPos);
-    }
-
-    void SpawnEnemyWave(int enemiesToSpawn)
-    {
-        Vector3 powerupSpawnOffset = new Vector3(0, 0, -15);
-
         if (GameObject.FindGameObjectsWithTag("Powerup").Length == 0)
         {
-            Instantiate(powerupPrefab, GenerateSpawnPosition() + powerupSpawnOffset, powerupPrefab.transform.rotation);
+            Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation);
         }
 
         for (int i = 0; i < enemiesToSpawn; i++)
@@ -51,10 +75,52 @@ public class SpawnManagerX : MonoBehaviour
         ResetPlayerPosition();
     }
 
-    void ResetPlayerPosition()
+    private Vector3 GenerateSpawnPosition()
+    {
+        float xPos = Random.Range(-spawnRangeX, spawnRangeX);
+        float zPos = Random.Range(spawnZMin, spawnZMax);
+        return new Vector3(xPos, 0, zPos);
+    }
+
+    private void ResetPlayerPosition()
     {
         player.transform.position = new Vector3(0, 1, -7);
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+    }
+
+    public void TriggerLossCondition()
+    {
+        if (!isGameOver)
+        {
+            lossText.gameObject.SetActive(true);
+            isGameOver = true;
+            Time.timeScale = 0;
+        }
+    }
+
+    public void TriggerWinCondition()
+    {
+        if (!isGameOver)
+        {
+            winText.gameObject.SetActive(true);
+            isGameOver = true;
+            Time.timeScale = 0;
+        }
+    }
+
+    private void RestartGame()
+    {
+        isGameOver = false;
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void IncrementWaveOnScore()
+    {
+        waveCount++;
+        enemySpeed += 10f; // Increase enemy speed with the wave
+        SpawnEnemyWave(waveCount);
+        waveText.text = "Wave: " + waveCount; // Update wave display
     }
 }

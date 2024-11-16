@@ -1,10 +1,17 @@
-﻿using System.Collections;
+﻿/*
+ * Stefanos Charalampous
+ * RotateCameraX.cs
+ * Assignment 7
+ * Rotates the camera around the player based on horizontal input.
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RotateCameraX : MonoBehaviour
 {
-    private float speed = 200;
+    private float speed = 150;
     public GameObject player;
 
     // Update is called once per frame

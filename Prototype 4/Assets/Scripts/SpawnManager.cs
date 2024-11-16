@@ -1,3 +1,10 @@
+/*
+ * Stefanos Charalampous
+ * SpawnManager.cs
+ * Assignment 7
+ * Spawns enemies and powerups, tracks wave progression, and handles win condition.
+ */
+
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -7,8 +14,8 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public GameObject powerupPrefab;
-    public TMP_Text waveText; // Text for displaying current wave
-    public TMP_Text winText; // Text for displaying win message
+    public TMP_Text waveText;
+    public TMP_Text winText;
     private float spawnRange = 9f;
     public int enemyCount;
     public int waveNumber = 1;
@@ -17,15 +24,15 @@ public class SpawnManager : MonoBehaviour
     {
         SpawnEnemyWave(waveNumber);
         SpawnPowerup(1);
-        waveText.text = "Wave: " + waveNumber; // Initialize wave number display
-        winText.gameObject.SetActive(false); // Ensure win text is hidden at the start
+        waveText.text = "Wave: " + waveNumber;
+        winText.gameObject.SetActive(false);
     }
 
     void Update()
     {
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
 
-        if (waveNumber > 10) // Win condition
+        if (waveNumber > 10)
         {
             DisplayWinMessage();
         }
@@ -34,7 +41,7 @@ public class SpawnManager : MonoBehaviour
             waveNumber++;
             SpawnEnemyWave(waveNumber);
             SpawnPowerup(1);
-            waveText.text = "Wave: " + waveNumber; // Update wave number display
+            waveText.text = "Wave: " + waveNumber;
         }
     }
 
@@ -63,14 +70,13 @@ public class SpawnManager : MonoBehaviour
 
     private void DisplayWinMessage()
     {
-        winText.gameObject.SetActive(true); // Show the win text
-        Time.timeScale = 0; // Pause the game
-        Debug.Log("You Win! Press R to Restart!");
+        winText.gameObject.SetActive(true);
+        Time.timeScale = 0;
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Time.timeScale = 1; // Resume the game before restarting
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Restart the scene
+            Time.timeScale = 1;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
