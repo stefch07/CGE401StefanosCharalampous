@@ -27,8 +27,17 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Lock the cursor when the game starts
-            Cursor.lockState = CursorLockMode.Locked;
+            // Check if the current scene is the main menu
+            if (SceneManager.GetActiveScene().name == "MainMenu")
+            {
+                Cursor.lockState = CursorLockMode.None;  // Unlock the cursor in the main menu
+                Cursor.visible = true;  // Make the cursor visible
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;  // Lock the cursor during gameplay
+                Cursor.visible = false;  // Hide the cursor during gameplay
+            }
         }
         else
         {
@@ -89,6 +98,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         pauseMenu.SetActive(true);
         Cursor.lockState = CursorLockMode.None;  // Unlock the cursor when the game is paused
+        Cursor.visible = true;  // Make the cursor visible when paused
     }
 
     public void Unpause()
@@ -96,6 +106,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         pauseMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;  // Lock cursor again when unpausing
+        Cursor.visible = false;  // Hide the cursor during gameplay
     }
 
     private void Update()
@@ -112,6 +123,21 @@ public class GameManager : MonoBehaviour
         if (score >= requiredScore)
         {
             WinLevel();
+        }
+
+        // Toggle cursor lock state with a specific key (e.g., "C")
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
     }
 
