@@ -14,6 +14,7 @@ public class Target : MonoBehaviour
     private GameManager gameManager; // Reference to GameManager
 
     public int pointValue; // Points awarded for clicking this target
+    public ParticleSystem explosionParticle;
 
     void Start()
     {
@@ -28,8 +29,17 @@ public class Target : MonoBehaviour
         // Set the initial position with a randomized X value
         transform.position = RandomSpawnPos();
 
-        // Find GameManager in the scene and get its component
-        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        // Attempt to find the GameManager in the scene
+        GameObject gameManagerObject = GameObject.FindGameObjectWithTag("GameManager");
+
+        if (gameManagerObject != null)
+        {
+            gameManager = gameManagerObject.GetComponent<GameManager>();
+        }
+        else
+        {
+            Debug.LogError("GameManager not found! Make sure it is tagged as 'GameManager'.");
+        }
     }
 
     // Generate a random upward force
@@ -53,16 +63,35 @@ public class Target : MonoBehaviour
     // Destroy the target when clicked
     private void OnMouseDown()
     {
-        if (gameManager != null) // Ensure GameManager is assigned
+        if (gameManager != null && gameManager.isGameActive) // Ensure GameManager exists and game is active
         {
             gameManager.UpdateScore(pointValue); // Increment score by pointValue
+
+            // Instantiate explosion particle effect
+            if (explosionParticle != null)
+            {
+                Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+            }
+            else
+            {
+                Debug.LogWarning("ExplosionParticle is not assigned to the Target prefab.");
+            }
+
+            Destroy(gameObject); // Destroy this target
         }
-        Destroy(gameObject); // Destroy this target
     }
 
     // Destroy the target when it enters a trigger collider
     private void OnTriggerEnter(Collider other)
     {
+        if (!gameObject.CompareTag("Bad")) // If not a "Bad" target
+        {
+            if (gameManager != null && gameManager.isGameActive) // Ensure GameManager exists and game is active
+            {
+                gameManager.GameOver(); // Trigger game over
+            }
+        }
+
         Destroy(gameObject); // Destroy this target
     }
 }
