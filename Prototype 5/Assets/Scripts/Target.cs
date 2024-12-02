@@ -1,3 +1,10 @@
+/*
+ * Stefanos Charalampous
+ * Target.cs
+ * Assignment
+ * This script manages the behavior of targets, including movement, scoring, and interactions with the player.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,27 +18,19 @@ public class Target : MonoBehaviour
     private float xRange = 4f;
     private float ySpawnPos = -6f;
 
-    private GameManager gameManager; // Reference to GameManager
+    private GameManager gameManager;
 
-    public int pointValue; // Points awarded for clicking this target
+    public int pointValue;
     public ParticleSystem explosionParticle;
 
     void Start()
     {
         targetRb = GetComponent<Rigidbody>();
-
-        // Apply a randomized upward force
         targetRb.AddForce(RandomForce(), ForceMode.Impulse);
-
-        // Apply randomized torque for rotation
         targetRb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
-
-        // Set the initial position with a randomized X value
         transform.position = RandomSpawnPos();
 
-        // Attempt to find the GameManager in the scene
         GameObject gameManagerObject = GameObject.FindGameObjectWithTag("GameManager");
-
         if (gameManagerObject != null)
         {
             gameManager = gameManagerObject.GetComponent<GameManager>();
@@ -42,56 +41,43 @@ public class Target : MonoBehaviour
         }
     }
 
-    // Generate a random upward force
     private Vector3 RandomForce()
     {
         return Vector3.up * Random.Range(minSpeed, maxSpeed);
     }
 
-    // Generate a random torque value for rotation
     private float RandomTorque()
     {
         return Random.Range(-maxTorque, maxTorque);
     }
 
-    // Generate a random spawn position
     private Vector3 RandomSpawnPos()
     {
         return new Vector3(Random.Range(-xRange, xRange), ySpawnPos);
     }
 
-    // Destroy the target when clicked
     private void OnMouseDown()
     {
-        if (gameManager != null && gameManager.isGameActive) // Ensure GameManager exists and game is active
+        if (gameManager != null && gameManager.isGameActive)
         {
-            gameManager.UpdateScore(pointValue); // Increment score by pointValue
-
-            // Instantiate explosion particle effect
+            gameManager.UpdateScore(pointValue);
             if (explosionParticle != null)
             {
                 Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
             }
-            else
-            {
-                Debug.LogWarning("ExplosionParticle is not assigned to the Target prefab.");
-            }
-
-            Destroy(gameObject); // Destroy this target
+            Destroy(gameObject);
         }
     }
 
-    // Destroy the target when it enters a trigger collider
     private void OnTriggerEnter(Collider other)
     {
-        if (!gameObject.CompareTag("Bad")) // If not a "Bad" target
+        if (!gameObject.CompareTag("Bad"))
         {
-            if (gameManager != null && gameManager.isGameActive) // Ensure GameManager exists and game is active
+            if (gameManager != null && gameManager.isGameActive)
             {
-                gameManager.GameOver(); // Trigger game over
+                gameManager.GameOver();
             }
         }
-
-        Destroy(gameObject); // Destroy this target
+        Destroy(gameObject);
     }
 }
